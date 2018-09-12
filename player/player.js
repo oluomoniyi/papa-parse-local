@@ -60,6 +60,7 @@ $(function()
 		{
 			start = performance.now();
 			var results = Papa.parse(txt, config);
+			logToOutput(results.data)
 			console.log("Synchronous parse results:", results);
 		}
 	});
@@ -172,7 +173,22 @@ function completeFn()
 			&& arguments[0]
 			&& arguments[0].data)
 		rows = arguments[0].data.length;
-
+	logToOutput(arguments[0].data)
 	console.log("Finished input (async). Time:", end-start, arguments);
 	console.log("Rows:", rows, "Stepped:", stepped, "Chunks:", chunks);
+}
+
+function logToOutput(data){
+	var output = document.getElementById('output')
+	output.value = JSON.stringify(data,null,2)	
+
+	//copy and paste json by default
+	output.select();
+	try {
+		var successful = document.execCommand('copy');
+		var msg = successful ? 'successful' : 'unsuccessful';
+		console.log('Copying text command was ' + msg);
+	} catch (err) {
+		console.log('Oops, unable to copy');
+	}
 }
